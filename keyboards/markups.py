@@ -13,3 +13,7 @@ btn1 = InlineKeyboardButton(text='😈😈😈',url='https://www.wildberries.ru/
 btn2 = InlineKeyboardButton(text='❤Давай еще❤',callback_data='next_round')
 main.insert(btn1)
 main.insert(btn2)
+
+CANCEL = InlineKeyboardMarkup(row_width=1)
+btn1 = InlineKeyboardButton(text='Отмена',callback_data='cancel')
+CANCEL.insert(btn1)

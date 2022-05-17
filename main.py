@@ -1,3 +1,4 @@
+import os
 import random
 
 from aiogram import Bot, Dispatcher, executor, types
@@ -7,7 +8,11 @@ from config import config
 from keyboards import markups as kb
 from data import data_op as op, data_text as te
 
-bot = Bot(token=config.BOT_TOKEN)
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+bot = Bot(token=os.getenv(te.TOKEN))
 dp = Dispatcher(bot)
 
 file_id = 0
@@ -15,6 +20,7 @@ users_id = []
 admins_id = []
 
 state = 0
+
 
 @dp.message_handler(commands=['start'])
 async def start_cmd(message: types.Message):
@@ -70,22 +76,24 @@ async def all_other_messages(message: types.Message):
     global admins_id
     global users_id
     global state
+    g = message.from_user.id
+    d = message.message_id
 
     if state == 1:
         if message.text == te.ADMIN_KEY:
-            await bot.send_message(message.from_user.id,te.ACCES)
-            await bot.delete_message(message.from_user.id, message.message_id)
-            await bot.delete_message(message.from_user.id, message.message_id - 1)
+            await bot.send_message(g,te.ACCES)
+            await bot.delete_message(g,d)
+            await bot.delete_message(g, d - 1)
             if message.from_user.id not in admins_id:
-                admins_id.append(message.from_user.id)
+                admins_id.append(g)
                 state = 0
         else:
-            await bot.send_message(message.from_user.id,te.NOTACCES)
-            await bot.delete_message(message.from_user.id, message.message_id)
-            await bot.delete_message(message.from_user.id, message.message_id - 1)
+            await bot.send_message(g,te.NOTACCES)
+            await bot.delete_message(g, d)
+            await bot.delete_message(g, d - 1)
     else:
-        await message.answer("Я не совсем понимаю тебя .Введите /start")
-        await bot.delete_message(message.from_user.id, message.message_id)
-        await bot.delete_message(message.from_user.id, message.message_id - 1)
+        await message.answer(te.UNDER)
+        await bot.delete_message(g, d)
+        await bot.delete_message(g, d - 1)
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)

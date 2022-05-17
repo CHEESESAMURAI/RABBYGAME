@@ -9,3 +9,7 @@ ENTER_KEY = 'Введите секретый ключ'
 ENTER_TEXT = 'Введите ваш текст для рассылки'
 
 START_PNG = "pictures/0.png"
+
+UNDER = "Я не совсем понимаю тебя .Введите /start"
+
+TOKEN = "BOT_TOKEN"
